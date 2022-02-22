@@ -1,5 +1,5 @@
-defmodule ExampleWeb.PageControllerTest do
-  use ExampleWeb.ConnCase
+defmodule PokedexWeb.PageControllerTest do
+  use PokedexWeb.ConnCase
 
   test "GET /", %{conn: conn} do
     conn = get(conn, "/")

@@ -1,9 +1,9 @@
-defmodule Example.MixProject do
+defmodule Pokedex.MixProject do
   use Mix.Project
 
   def project do
     [
-      app: :example,
+      app: :pokedex,
       version: "0.1.0",
       elixir: "~> 1.12",
       elixirc_paths: elixirc_paths(Mix.env()),
@@ -19,7 +19,7 @@ defmodule Example.MixProject do
   # Type `mix help compile.app` for more information.
   def application do
     [
-      mod: {Example.Application, []},
+      mod: {Pokedex.Application, []},
       extra_applications: [:logger, :runtime_tools]
     ]
   end
@@ -36,6 +36,7 @@ defmodule Example.MixProject do
       {:phoenix, "~> 1.6.1"},
       {:phoenix_ecto, "~> 4.4"},
       {:ecto_sql, "~> 3.6"},
+      {:esbuild, "~> 0.3", runtime: Mix.env() == :dev},
       {:postgrex, ">= 0.0.0"},
       {:phoenix_html, "~> 3.0"},
       {:phoenix_live_reload, "~> 1.2", only: :dev},
@@ -48,7 +49,10 @@ defmodule Example.MixProject do
       {:telemetry_poller, "~> 1.0"},
       {:gettext, "~> 0.18"},
       {:jason, "~> 1.2"},
-      {:plug_cowboy, "~> 2.5"}
+      {:plug_cowboy, "~> 2.5"},
+      {:absinthe_phoenix, "~> 2.0.0"},
+      {:absinthe, "~> 1.6.0"},
+      {:tailwind, "~> 0.1", runtime: Mix.env() == :dev}
     ]
   end
 
