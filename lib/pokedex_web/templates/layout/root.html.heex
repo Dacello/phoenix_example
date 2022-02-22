@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+  <head>
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <%= csrf_meta_tag() %>
+    <%= live_title_tag assigns[:page_title] || "Pokedex", suffix: " · Phoenix Framework" %>
+    <link phx-track-static rel="stylesheet" href={Routes.static_path(@conn, "/assets/app.css")}/>
+    <script defer phx-track-static type="text/javascript" src={Routes.static_path(@conn, "/assets/app.js")}></script>
+  </head>
+  <body>
+    <div class="min-h-full">
+      <div class="bg-gray-800">
+        <nav class="bg-gray-800">
+          <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+            <div class="border-b border-gray-700">
+              <div class="flex items-center justify-between h-16 px-4 sm:px-0">
+                <div class="flex items-center">
+                  <div class="flex-shrink-0">
+                    <img class="h-8 w-8" src={Routes.static_path(@conn, "/images/logo.png")} alt="Pokedex">
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </nav>
+      </div>
+      <main class="-mt-32">
+        <div class="max-w-7xl mx-auto pb-12 px-4">
+          <%= @inner_content %>
+        </div>
+      </main>
+    </div>
+
+  </body>
+</html>

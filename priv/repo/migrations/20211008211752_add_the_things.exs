@@ -1,4 +1,4 @@
-defmodule Example.Repo.Migrations.AddTheThings do
+defmodule Pokedex.Repo.Migrations.AddTheThings do
   use Ecto.Migration
   import Ecto.SoftDelete.Migration
 
@@ -6,9 +6,10 @@ defmodule Example.Repo.Migrations.AddTheThings do
     create table(:types) do
       add(:name, :string)
       add(:color, :string)
-      add(:parent_type, references(:types), on_delete: :nothing)
+      add(:parent_type_id, references(:types), on_delete: :nothing)
 
       soft_delete_columns()
+      timestamps()
     end
 
     create table(:type_weaknesses) do
@@ -16,6 +17,7 @@ defmodule Example.Repo.Migrations.AddTheThings do
       add(:weakness_id, references(:types), on_delete: :nothing)
 
       soft_delete_columns()
+      timestamps()
     end
 
     create table(:type_resistances) do
@@ -23,6 +25,7 @@ defmodule Example.Repo.Migrations.AddTheThings do
       add(:resistance_id, references(:types), on_delete: :nothing)
 
       soft_delete_columns()
+      timestamps()
     end
 
     create table(:pokemons) do
@@ -32,6 +35,7 @@ defmodule Example.Repo.Migrations.AddTheThings do
       add(:evolution_id, references(:pokemons), on_delete: :nothing)
 
       soft_delete_columns()
+      timestamps()
     end
 
     create table(:moves) do
@@ -42,6 +46,7 @@ defmodule Example.Repo.Migrations.AddTheThings do
       add(:pokemon_id, references(:pokemons), on_delete: :nothing)
 
       soft_delete_columns()
+      timestamps()
     end
   end
 end

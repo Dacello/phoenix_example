@@ -5,23 +5,23 @@ import Config
 # The MIX_TEST_PARTITION environment variable can be used
 # to provide built-in test partitioning in CI environment.
 # Run `mix help test` for more information.
-config :example, Example.Repo,
+config :pokedex, Pokedex.Repo,
   username: "postgres",
   password: "postgres",
-  database: "example_test#{System.get_env("MIX_TEST_PARTITION")}",
+  database: "pokedex_test#{System.get_env("MIX_TEST_PARTITION")}",
   hostname: "localhost",
   pool: Ecto.Adapters.SQL.Sandbox,
   pool_size: 10
 
 # We don't run a server during test. If one is required,
 # you can enable the server option below.
-config :example, ExampleWeb.Endpoint,
+config :pokedex, PokedexWeb.Endpoint,
   http: [ip: {127, 0, 0, 1}, port: 4002],
   secret_key_base: "q+7T/BaJu3TXPj2JDqVUlpEK3kVDHCJAi1AchvMfbvkAViuz4Y7rRkplq6NB1y4Z",
   server: false
 
 # In test we don't send emails.
-config :example, Example.Mailer, adapter: Swoosh.Adapters.Test
+config :pokedex, Pokedex.Mailer, adapter: Swoosh.Adapters.Test
 
 # Print only warnings and errors during test
 config :logger, level: :warn

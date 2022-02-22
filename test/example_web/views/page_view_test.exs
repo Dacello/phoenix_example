@@ -1,3 +1,3 @@
-defmodule ExampleWeb.PageViewTest do
-  use ExampleWeb.ConnCase, async: true
+defmodule PokedexWeb.PageViewTest do
+  use PokedexWeb.ConnCase, async: true
 end

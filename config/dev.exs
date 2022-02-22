@@ -1,10 +1,10 @@
 import Config
 
 # Configure your database
-config :example, Example.Repo,
+config :pokedex, Pokedex.Repo,
   username: "postgres",
   password: "postgres",
-  database: "example_dev",
+  database: "pokedex_dev",
   hostname: "localhost",
   show_sensitive_data_on_connection_error: true,
   pool_size: 10
@@ -15,7 +15,7 @@ config :example, Example.Repo,
 # The watchers configuration can be used to run external
 # watchers to your application. For example, we use it
 # with esbuild to bundle .js and .css sources.
-config :example, ExampleWeb.Endpoint,
+config :pokedex, PokedexWeb.Endpoint,
   # Binding to loopback ipv4 address prevents access from other machines.
   # Change to `ip: {0, 0, 0, 0}` to allow access from other machines.
   http: [ip: {127, 0, 0, 1}, port: 4000],
@@ -24,7 +24,30 @@ config :example, ExampleWeb.Endpoint,
   debug_errors: true,
   secret_key_base: "ft2bHB0gHREZqNuzSDXQ4zNqcn0eRctn8rh2E/bixqLsLozcDhCdBfGu2AolBR6m",
   watchers: [
-    node: ["esbuild.js", "--watch", cd: Path.expand("../assets", __DIR__)]
+    tailwind: {Tailwind, :install_and_run, [:default, ~w(--watch)]},
+    # Start the esbuild watcher by calling Esbuild.install_and_run(:default, args)
+    esbuild: {Esbuild, :install_and_run, [:default, ~w(--sourcemap=inline --watch)]}
+  ]
+
+# Configure esbuild (the version is required)
+config :esbuild,
+  version: "0.14.0",
+  default: [
+    args:
+      ~w(js/app.js --bundle --target=es2017 --outdir=../priv/static/assets --external:/fonts/* --external:/images/*),
+    cd: Path.expand("../assets", __DIR__),
+    env: %{"NODE_PATH" => Path.expand("../deps", __DIR__)}
+  ]
+
+config :tailwind,
+  version: "3.0.7",
+  default: [
+    args: ~w(
+          --config=tailwind.config.js
+          --input=css/app.css
+          --output=../priv/static/assets/app.css
+          ),
+    cd: Path.expand("../assets", __DIR__)
   ]
 
 # ## SSL Support
@@ -52,13 +75,13 @@ config :example, ExampleWeb.Endpoint,
 # different ports.
 
 # Watch static and templates for browser reloading.
-config :example, ExampleWeb.Endpoint,
+config :pokedex, PokedexWeb.Endpoint,
   live_reload: [
     patterns: [
       ~r"priv/static/.*(js|css|png|jpeg|jpg|gif|svg)$",
       ~r"priv/gettext/.*(po)$",
-      ~r"lib/example_web/(live|views)/.*(ex)$",
-      ~r"lib/example_web/templates/.*(eex)$"
+      ~r"lib/pokedex_web/(live|views)/.*(ex)$",
+      ~r"lib/pokedex_web/templates/.*(eex)$"
     ]
   ]
 
