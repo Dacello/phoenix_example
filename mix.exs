@@ -52,6 +52,7 @@ defmodule Pokedex.MixProject do
       {:plug_cowboy, "~> 2.5"},
       {:absinthe_phoenix, "~> 2.0.0"},
       {:absinthe, "~> 1.6.0"},
+      {:httpoison, "~> 1.8"},
       {:tailwind, "~> 0.1", runtime: Mix.env() == :dev}
     ]
   end

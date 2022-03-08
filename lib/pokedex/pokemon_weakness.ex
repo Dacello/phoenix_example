@@ -19,9 +19,7 @@ defmodule Pokedex.PokemonWeakness do
   def changeset(model, params \\ %{}) do
     model
     |> cast(params, [
-      :name,
-      :hp,
-      :evolution_id,
+      :pokemon_id,
       :type_id
     ])
   end

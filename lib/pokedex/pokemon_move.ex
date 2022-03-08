@@ -1,26 +1,23 @@
-defmodule Pokedex.PokemonResistance do
+defmodule Pokedex.PokemonMove do
   @moduledoc false
 
   use Ecto.Schema
   import Ecto.Changeset, warn: false
   import Ecto.SoftDelete.Schema
 
-  alias Pokedex.{Type, Pokemon}
+  alias Pokedex.{Pokemon, Move}
 
   @type t :: %__MODULE__{}
-  schema "pokemon_resistances" do
-    belongs_to(:type, Type)
+
+  schema "pokemon_moves" do
     belongs_to(:pokemon, Pokemon)
+    belongs_to(:move, Move)
 
     timestamps()
     soft_delete_schema()
   end
 
   def changeset(model, params \\ %{}) do
-    model
-    |> cast(params, [
-      :pokemon_id,
-      :type_id
-    ])
+    cast(model, params, [:move_id, :pokemon_id])
   end
 end

@@ -1,37 +1,52 @@
 defmodule Pokedex.Pokemons do
   import Ecto.Query
 
-  alias Pokedex.{Type, Pokemon, Repo}
+  alias Pokedex.{Pokemon, Repo}
 
-  @default_preloads [:type, evolution: [:type, evolution: [:type]]]
+  @default_preloads [:types, :moves, evolves_from: [:types, :moves]]
+
+  def list_pokemon(preloads \\ @default_preloads) do
+    Pokemon
+    |> preload(^preloads)
+    |> Repo.all()
+  end
+
+  def list_pokemon_by_type(type_name, preloads \\ @default_preloads) do
+    from(pokemon in Pokemon,
+      inner_join: types in assoc(pokemon, :types),
+      on: types.name == ^type_name,
+      as: :types
+    )
+    |> preload(^preloads)
+    |> Repo.all()
+  end
 
   def get_pokemon(id, preloads \\ @default_preloads) do
     Pokemon
+    |> preload(^preloads)
     |> Repo.get(id)
-    |> Repo.preload(preloads)
   end
 
   def get_pokemon_by_name(name, preloads \\ @default_preloads) do
+    parsed_name =
+      name
+      |> String.downcase()
+      |> String.trim()
+
     Pokemon
-    |> Repo.get_by(name: name)
-    |> Repo.preload(preloads)
+    |> preload(^preloads)
+    |> Repo.get_by(name: parsed_name)
   end
 
-  def create_pokemon(params) do
+  def create_pokemon!(params) do
     %Pokemon{}
     |> Pokemon.changeset(params)
-    |> Repo.insert()
+    |> Repo.insert!()
   end
 
-  def update_pokemon(pokemon, params) do
+  def update_pokemon!(pokemon, params) do
     pokemon
     |> Pokemon.changeset(params)
-    |> Repo.update()
-  end
-
-  def create_pokemon_type(params) do
-    %Type{}
-    |> Type.changeset(params)
-    |> Repo.insert()
+    |> Repo.update!()
   end
 end
