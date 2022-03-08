@@ -5,15 +5,14 @@ defmodule Pokedex.Type do
   import Ecto.Changeset, warn: false
   import Ecto.SoftDelete.Schema
 
-  alias Pokedex.{Pokemon, Type}
+  alias Pokedex.{Pokemon, PokemonType}
 
   @type t :: %__MODULE__{}
   schema "types" do
     field(:name, :string)
-    field(:color, :string)
 
-    belongs_to(:parent_type, Type)
-    has_many(:pokemon, Pokemon)
+    has_many(:pokemon_types, PokemonType)
+    has_many(:pokemon, through: [:pokemon_types, :pokemon])
 
     timestamps()
     soft_delete_schema()
@@ -21,9 +20,7 @@ defmodule Pokedex.Type do
 
   def changeset(model, params \\ %{}) do
     model
-    |> cast(params, [
-      :name,
-      :color,
-    ])
+    |> cast(params, [:name])
+    |> unique_constraint(:name)
   end
 end
