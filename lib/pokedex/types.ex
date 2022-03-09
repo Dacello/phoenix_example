@@ -26,7 +26,7 @@ defmodule Pokedex.Types do
   def get_type(id, preloads \\ @default_preloads) do
     Type
     |> preload(^preloads)
-    |> Repo.get()
+    |> Repo.get(id)
   end
 
   def get_type_by_name(name, preloads \\ @default_preloads) do
@@ -37,6 +37,6 @@ defmodule Pokedex.Types do
 
     Type
     |> preload(^preloads)
-    |> Repo.get_by(name: name)
+    |> Repo.get_by(name: parsed_name)
   end
 end

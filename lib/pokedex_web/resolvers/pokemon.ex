@@ -1,4 +1,6 @@
 defmodule Pokedex.Resolvers.Pokemon do
+  use Pokedex.Resolvers.Resolver
+
   alias Pokedex.Pokemons
 
   def list_pokemon(_entity, %{type: type}, _context) do
@@ -10,7 +12,10 @@ defmodule Pokedex.Resolvers.Pokemon do
   end
 
   def get_pokemon(_entity, %{name: name}, _context) do
-    {:ok, Pokemons.get_pokemon_by_name(name)}
+    {:ok,
+     name
+     |> trim_string()
+     |> Pokemons.get_pokemon_by_name()}
   end
 
   def get_pokemon(_entity, %{id: id}, _context) do

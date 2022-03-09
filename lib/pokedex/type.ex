@@ -5,7 +5,7 @@ defmodule Pokedex.Type do
   import Ecto.Changeset, warn: false
   import Ecto.SoftDelete.Schema
 
-  alias Pokedex.{Pokemon, PokemonType}
+  alias Pokedex.{PokemonType}
 
   @type t :: %__MODULE__{}
   schema "types" do
