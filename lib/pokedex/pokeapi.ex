@@ -18,12 +18,12 @@ defmodule Pokedex.Pokeapi do
             }
           end)
 
-        types = create_types(api_results)
-        moves = create_moves(api_results)
-        pokemons = create_pokemons(api_results)
-        create_pokemon_moves(api_results, pokemons, moves)
-        create_pokemon_types(api_results, pokemons, types)
-        populate_evolves_from_ids(api_results, pokemons)
+        types = create_types!(api_results)
+        moves = create_moves!(api_results)
+        pokemons = create_pokemons!(api_results)
+        create_pokemon_moves!(api_results, pokemons, moves)
+        create_pokemon_types!(api_results, pokemons, types)
+        populate_evolves_from_ids!(api_results, pokemons)
 
         if dry_run? do
           Repo.rollback(:dry_run)
@@ -51,23 +51,23 @@ defmodule Pokedex.Pokeapi do
 
   defp get_image_url_from_pokemon_response(_), do: nil
 
-  def create_types(api_results) do
+  def create_types!(api_results) do
     api_results
     |> Enum.flat_map(&Map.get(&1[:pokemon], "types"))
     |> Enum.uniq_by(& &1["type"]["name"])
-    |> Enum.map(&create_type/1)
+    |> Enum.map(&create_type!/1)
   end
 
-  defp create_type(%{"type" => %{"name" => name}}), do: Types.create_type!(%{name: name})
+  defp create_type!(%{"type" => %{"name" => name}}), do: Types.create_type!(%{name: name})
 
-  def create_moves(api_results) do
+  def create_moves!(api_results) do
     api_results
     |> Enum.flat_map(&Map.get(&1[:pokemon], "moves"))
     |> Enum.uniq_by(& &1["move"]["name"])
-    |> Enum.map(&create_move/1)
+    |> Enum.map(&create_move!/1)
   end
 
-  defp create_move(%{"move" => %{"name" => name, "url" => "#{@base_url}/move/" <> pokeapi_path}}) do
+  defp create_move!(%{"move" => %{"name" => name, "url" => "#{@base_url}/move/" <> pokeapi_path}}) do
     pokeapi_id =
       pokeapi_path
       |> String.replace("/", "")
@@ -76,7 +76,7 @@ defmodule Pokedex.Pokeapi do
     Moves.create_move!(%{name: name, pokeapi_id: pokeapi_id})
   end
 
-  def create_pokemons(api_results) do
+  def create_pokemons!(api_results) do
     Enum.map(api_results, fn %{pokemon: pokemon} ->
       Pokemons.create_pokemon!(%{
         name: pokemon["name"],
@@ -87,7 +87,7 @@ defmodule Pokedex.Pokeapi do
     end)
   end
 
-  defp create_pokemon_moves(api_results, pokemons, moves) do
+  defp create_pokemon_moves!(api_results, pokemons, moves) do
     Enum.map(api_results, fn %{pokemon: %{"name" => pokemon_name, "moves" => pokemon_moves}} ->
       %{id: pokemon_id} = Enum.find(pokemons, &(&1.name == pokemon_name))
 
@@ -100,7 +100,7 @@ defmodule Pokedex.Pokeapi do
     end)
   end
 
-  defp create_pokemon_types(api_results, pokemons, types) do
+  defp create_pokemon_types!(api_results, pokemons, types) do
     Enum.map(api_results, fn %{pokemon: %{"name" => pokemon_name, "types" => pokemon_types}} ->
       %{id: pokemon_id} = Enum.find(pokemons, &(&1.name == pokemon_name))
 
@@ -113,7 +113,7 @@ defmodule Pokedex.Pokeapi do
     end)
   end
 
-  defp populate_evolves_from_ids(api_results, pokemons) do
+  defp populate_evolves_from_ids!(api_results, pokemons) do
     Enum.map(
       api_results,
       fn

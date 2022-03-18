@@ -53,6 +53,8 @@ defmodule PokedexWeb.Router do
     end
   end
 
+  forward "/api", Absinthe.Plug, schema: PokedexWeb.Schema
+
   scope "/graphiql" do
     forward "/", Absinthe.Plug.GraphiQL, schema: PokedexWeb.Schema
   end

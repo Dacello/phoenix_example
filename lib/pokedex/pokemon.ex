@@ -13,6 +13,7 @@ defmodule Pokedex.Pokemon do
     field(:image_url, :string)
     field(:pokeapi_id, :integer)
     field(:stats, :map)
+    field(:captured_at, :utc_datetime_usec)
 
     belongs_to(:evolves_from, Pokemon)
 
@@ -31,6 +32,7 @@ defmodule Pokedex.Pokemon do
       :name,
       :stats,
       :image_url,
+      :captured_at,
       :pokeapi_id,
       :evolves_from_id
     ])

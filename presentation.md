@@ -1,10 +1,18 @@
-A few years back, I did a presentation on GraphQL. At the time, I was working on a project called "AutoFi", and we had just started playing around with using GraphQL there (AutoFi used JS exclusively).
+# GraphQL in Elixir
+When does it make sense to use GraphQL in Elixir?
 
-I hadn't gotten too deep into elixir yet at the time, but I did note that there was an Elixir implementation of GraphQL called "Absinthe", and I was curious to try it. But, I never got around to using it for that presentation, and since then there really haven't been any opportunities to create a graphql api in elixir.
+## Building an GraphQL API in Elixir
+
+
+### Background
+A few years back, I did a presentation on GraphQL. At the time, I was working on a project called "AutoFi", and we had just started playing around with using GraphQL there (AutoFi used JS exclusively).
+I hadn't gotten too deep into elixir yet at the time, but I did note that there was an Elixir implementation of GraphQL called "Absinthe", and I was curious to try it. I never got around to using it for that presentation, and since then there really haven't been any opportunities to create a graphql api in elixir.
 
 So, recently I decided I would try out absinthe on a hobby project, with the hopes of using it for this presentation and maybe even some #content.
 
-I needed to have a good dataset with some reasonably complex associations so we can get the most out of GraphQL
+
+### The Dataset
+I needed to have a good dataset with some reasonably complex associations so we can get the most out of GraphQL.
 I decided to go with Pokemon, since:
   1. I recently picked the card game back up and its been fun 
   2. The data relationships are actually pretty complex and will be great for showing what GraphQL has to offer
@@ -34,16 +42,16 @@ They probably havent implemented any of these:
 - Query Cost Analysis
 Probably arent caching requests either...
 
-The REST API however, seemed to be a bit more reliable and also, happened to have almost all the data I needed (plus a ton that I didnt) in the standard pokemon GET request. 
-Interestingly, there was one data point I needed that required an additional request to get (the evolves from id), because for some reason that wasnt available on the pokemon get endpoint, instead I had to hit the pokemon_species GET endpoint...
+Their REST API seemed to be a bit more reliable, and also happened to have almost all the data I needed in the standard pokemon GET request. 
+Interestingly, there was one data point I needed that required an additional request to get (the evolves from pookemon id), because for some reason that wasnt available on the `pokemon` endpoint, instead I had to hit the `pokemon_species` endpoint...
 
 A good example of REST requiring both over-fetching AND under-fetching at the same time.
 That said, it still worked for my purposes even if it isnt the most performant.
 
+
 So, now that I had data in my system, it was time to expose that via a graphQL API.
 
 
+https://elixirforum.com/t/anyone-using-a-phoenix-liveview-client-to-access-a-phoenix-absinthe-api/26614/10
 
-
-I actually found this API 
-Incase you don't know what a Pokedex is... its a device that allows you to get all the relevant data about any given pokemon. 
+https://docs.expo.dev/guides/using-graphql/

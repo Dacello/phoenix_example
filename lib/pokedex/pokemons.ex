@@ -49,4 +49,10 @@ defmodule Pokedex.Pokemons do
     |> Pokemon.changeset(params)
     |> Repo.update!()
   end
+
+  def update_pokemon(pokemon, params) do
+    pokemon
+    |> Pokemon.changeset(params)
+    |> Repo.update()
+  end
 end

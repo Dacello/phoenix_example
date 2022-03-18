@@ -29,10 +29,29 @@ defmodule PokedexWeb.Schema do
     end
   end
 
+  mutation do
+    @desc "Mark a Pokemon as captured"
+    field :capture_pokemon, :pokemon do
+      arg :id, non_null(:id)
+
+      resolve &Resolvers.Pokemon.capture_pokemon/3
+    end
+
+    @desc "Unmark a Pokemon as captured"
+    field :uncapture_pokemon, :pokemon do
+      arg :id, non_null(:id)
+
+      resolve &Resolvers.Pokemon.uncapture_pokemon/3
+    end
+  end
+
+
   object :pokemon do
     field :id, :id
     field :name, :string
+    field :image_url, :string
     field :evolves_from, :pokemon
+    field :captured_at, :string
     field :types, list_of(:type)
     field :moves, list_of(:move)
   end
@@ -40,10 +59,12 @@ defmodule PokedexWeb.Schema do
   object :type do
     field :id, :id
     field :name, :string
+    field :pokemon, list_of(:pokemon)
   end
 
   object :move do
     field :id, :id
     field :name, :string
+    field :pokemon, list_of(:pokemon)
   end
 end
