@@ -43,11 +43,11 @@ forward "/api", Absinthe.Plug, schema: MyAppWeb.Schema
 ## Demo!
 
 ### Background
-A few years back, I did a presentation on GraphQL. At the time, I was working on a project where we had just started playing around with GraphQL, but it was exclusively Javascript.
+A few years back, I did a [presentation](https://github.com/Dacello/graphql-prezo) and wrote a [blog post](https://revelry.co/insights/development/what-is-graphql/) on GraphQL. At the time, I was working on a project where we had just started playing around with GraphQL, but it was exclusively Javascript.
 
 I hadn't gotten very deep into Elixir yet at the time, but I had heard of an Elixir implementation of GraphQL called "Absinthe", and I was curious to try it. I never got around to using it for that presentation (instead I used Node and Apollo, which is not a terrible experience, but **_Elixir_**). Since then, I _still_ haven't had any opportunities to create a GraphQL API in Elixir.
 
-Lately, Ive been finding myself on projects that are using Elixir (YAY) but unfortunately not the shiniest newest stuff (e.g. PETAL stack w/ the latest LiveView). I decided that it would be good to play around with a fresh Phoenix app to try out all fun stuff people have been reving about. Initially this was primarily to get my feet wet with the PETAL stack, but I have since pivoted and am using this example app to play with Absinthe.
+Lately, Ive been finding myself on projects that are using Elixir (YAY) but unfortunately not the shiniest newest stuff (e.g. PETAL stack w/ the latest LiveView). I decided that it would be good to play around with a fresh Phoenix app to try out all fun stuff people have been raving about. Initially this was primarily to get my feet wet with the PETAL stack, but I have since pivoted and am using this example app to play with Absinthe.
 
 I was actually gonna see if I could do something with Absinthe in the PETAL stack, but it didnt take long for me to talk myself out of trying to figure out how the heck a LiveView + Absinthe stack would work.
 
@@ -64,10 +64,9 @@ I decided to go with **Pokemon**, because:
 I knew there must be some public API out there that I could use for this... and it turns out there is!
 
 I found https://pokeapi.co/, which has a _ton_ of data; in fact way more than I want. 
-Unfortunately, this API is really specific to the Pokemon video games (which are great, but I haven't played them since red/blue)
-I decided it would be good enough for now, at least for an example application (even if I might need a different dataset to make a deck building app)
+Unfortunately, this API is really specific to the Pokemon video games (which are great, but I haven't played them since red/blue). I decided it would be good enough for now, at least for an example application (even if I might need a different dataset to make a deck building app that I might actually use IRL...)
 
-Interestingly, this API offers both REST and GraphQL APIs. 
+Interestingly, PokeAPI offers both REST and GraphQL APIs. 
 
 https://pokeapi.co/docs/v2
 https://beta.pokeapi.co/GraphQL/console/
@@ -110,8 +109,9 @@ query samplePokeAPIquery {
 
 Interestingly, once you start trying to query several levels of of nested associations,
 The app starts freezing up / timing out pretty quick.
-To be fair, the pokeapi GraphQL api is still in Beta (for who knows how long)
-They probably havent implemented any of these:
+To be fair, the pokeapi GraphQL api is still in Beta.
+
+They probably havent implemented any of these optimizations/protective measures:
 - Size Limiting
 - Query Whitelisting
 - Depth Limiting
@@ -119,15 +119,19 @@ They probably havent implemented any of these:
 - Query Cost Analysis 
 - Caching
 
-Their REST API seemed to be a bit more reliable, and also happened to have almost all the data I needed in the standard Pokemon GET request. 
+Their REST API seemed to be a bit more reliable, and also happened to have almost all the data I needed in the standard `/pokemon` GET request. 
 
-Funny enough, there was one data point I needed that required an additional request for each pokemon (the evolves from Pokemon id), because for some reason that wasnt available on the `/pokemon` endpoint, instead I had to hit the `/pokemon_species` endpoint...
+Funny enough, there was one data point I needed that required an additional request for each pokemon (the `evolves_from_species_id`), because for some reason that wasnt available on the `/pokemon` endpoint, instead I had to hit the `/pokemon_species` endpoint...
 
-This is a perfect example of REST requiring both over-fetching AND under-fetching.
+This is a perfect example of REST requiring both **over-fetching** AND **under-fetching**.
 
 At the same time their GraphQL API is a good example of how you can run into performance problems pretty quickly with GraphQL if you arent careful. 
 
-Anyway, this presentation / demo is about GraphQL in _Elixir_, so I figured itd be OK to write my data import script using the PokeAPI REST API, and then just expose the data I stole via my own Elixir/Absinthe GraphQL API (Not to mention the shapes/names of their data hurts my heart). 
+**Regardless of the tech stack, you can and will eventually run into performance issues that will require intentional optimization and refactoring.**
+
+---
+
+_Anyway_... this presentation / demo is about GraphQL in _Elixir_, so I figured itd be OK to write my data import script using the PokeAPI REST API, and then just expose the data I stole via my own Elixir/Absinthe GraphQL API (Not to mention the shapes/names of their data hurts my heart). 
 
 I decided to limit my dataset to the origin 151 pokemon, with the following data for each Pokemon:
 - An Image
