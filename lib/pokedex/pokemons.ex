@@ -3,7 +3,7 @@ defmodule Pokedex.Pokemons do
 
   alias Pokedex.{Pokemon, Repo}
 
-  @default_preloads [:types, :moves, evolves_from: [:types, :moves]]
+  @default_preloads [:types, :moves, evolves_from: [:types, :moves, :evolves_from]]
 
   def list_pokemon(preloads \\ @default_preloads) do
     Pokemon
@@ -11,7 +11,11 @@ defmodule Pokedex.Pokemons do
     |> Repo.all()
   end
 
-  def list_pokemon_by_type(type_name, preloads \\ @default_preloads) do
+  def list_pokemon_by_type(type_name, preloads \\ @default_preloads)
+
+  def list_pokemon_by_type("all", preloads), do: list_pokemon(preloads)
+
+  def list_pokemon_by_type(type_name, preloads) do
     from(pokemon in Pokemon,
       inner_join: types in assoc(pokemon, :types),
       on: types.name == ^type_name,
