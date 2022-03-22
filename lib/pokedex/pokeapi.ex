@@ -1,5 +1,5 @@
 defmodule Pokedex.Pokeapi do
-  alias Pokedex.{Pokemons, Types, Moves, Repo}
+  alias Pokedex.{Pokemons, Types, Moves, Move, Repo}
 
   @base_url "https://pokeapi.co/api/v2"
   @original_pokemon_count 151
@@ -24,6 +24,7 @@ defmodule Pokedex.Pokeapi do
         create_pokemon_moves!(api_results, pokemons, moves)
         create_pokemon_types!(api_results, pokemons, types)
         populate_evolves_from_ids!(api_results, pokemons)
+        populate_moves!()
 
         if dry_run? do
           Repo.rollback(:dry_run)
@@ -31,6 +32,36 @@ defmodule Pokedex.Pokeapi do
       end,
       timeout: :infinity
     )
+  end
+
+  def populate_moves!() do
+    Move
+    |> Repo.all()
+    |> Enum.each(fn move ->
+      case HTTPoison.get!("#{@base_url}/move/#{move.pokeapi_id}") do
+        %{body: "Not Found"} ->
+          {:ok, :not_found}
+
+        %{body: response_body} ->
+          parsed = Jason.decode!(response_body)
+
+          %{
+            "accuracy" => accuracy,
+            "power" => power,
+            "pp" => pp,
+            "damage_class" => %{"name" => damage_class},
+            "effect_entries" => effects
+          } = parsed
+
+          Moves.update_move!(move, %{
+            accuracy: accuracy,
+            power: power,
+            pp: pp,
+            damage_class: damage_class,
+            effects: effects
+          })
+      end
+    end)
   end
 
   defp normalize_stats(stats) do

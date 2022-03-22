@@ -11,6 +11,12 @@ defmodule Pokedex.Moves do
     |> Repo.insert!()
   end
 
+  def update_move!(move, params \\ %{}) do
+    move
+    |> Move.changeset(params)
+    |> Repo.update!()
+  end
+
   def create_pokemon_move!(params \\ %{}) do
     %PokemonMove{}
     |> PokemonMove.changeset(params)

@@ -141,7 +141,7 @@ I decided to limit my dataset to the origin 151 pokemon, with the following data
  - There is a ton of data that I could have captured for every move, but for simplicity sake I decided to just capture the names of each move
 
 
-End result: https://github.com/Dacello/pokdex
+End result: https://github.com/Dacello/pokedex
 
 
 ### Consuming our new GraphQL API via a Mobile App
@@ -154,4 +154,4 @@ Anyway, I went with a simple Expo app to make things easy
 Sidenote: Man, Expo has gotten really nice to work with! I remember creating react native apps when it first started and it was not this easy or pleasant.
 
 
-End result: https://github.com/Dacello/pokdex_mobile
+End result: https://github.com/Dacello/pokedex_mobile
